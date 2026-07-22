@@ -1,0 +1,182 @@
+{
+  "name": "Days 3 workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e7f646e1-6abe-49ed-833a-3eea8b03e9cb",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        48
+      ],
+      "id": "67e6dc7f-ea3e-4ad9-8924-75aebfe0e933",
+      "name": "Webhook",
+      "webhookId": "e7f646e1-6abe-49ed-833a-3eea8b03e9cb"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Tum ek tuition center ke liye ek friendly customer support assistant ho. Neeche customer ka message hai. Iska professional aur helpful reply Roman Urdu mein likho.\n\nCustomer ka naam: {{ $json.body.student_name }}\nSubject: {{ $json.body.subject }}\nClass: {{ $json.body.class_level }}\nPreferred Time: {{ $json.body.preferred_time }}\nReply mein exactly yeh cheezein include karo aur kuch extra mat likho:\n1. Customer ko unke naam se greet karo\n2. Confirm karo unka subject aur time\n3. End mein sirf ye line likho: \"Class booking confirm karne ke liye humein reply karein.\""
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e5981b3b-9bea-4d4a-baa3-1191a2dedd80",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        640,
+        -96
+      ],
+      "id": "718e9f7a-f3ee-4142-866c-6c1b8c2cef30",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Shukriya aapke message ke liye! Hamari team jald hi aapse rabta karegi.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        800,
+        80
+      ],
+      "id": "957712f2-263a-4c5d-9fc1-0ba754089cf1",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c4c24f65-4987-4684-8c68-e9ff76b61ca5",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        176
+      ],
+      "id": "efc184b0-7674-4e0d-a498-56292c1370c7",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4a93c15a-a7e2-46b5-be90-2a148e47e4ed",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cecc21b4afde163c306314c82883b221c1a01ccb3593abc9d7425573b4018eb0"
+  },
+  "nodeGroups": [],
+  "id": "nPfsI8pBtRCFBzIT",
+  "tags": [
+    {
+      "name": "webhook",
+      "id": "ACQ0Rq3u0X4nESrQ",
+      "updatedAt": "2026-07-22T03:28:19.366Z",
+      "createdAt": "2026-07-22T03:28:19.366Z"
+    }
+  ]
+}
