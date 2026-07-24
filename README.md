@@ -23,6 +23,11 @@ Webhook Trigger → Google Gemini AI → Success/Error Check (IF Node) → Respo
 4. If AI fails, an IF node detects the error and triggers a fallback message — ensuring the student always gets a response
 5. Reply is sent back instantly via Respond to Webhook
 
+## Live Demo
+A simple web form (`tuition-inquiry-form.html`) is included in this repo to demonstrate the automation in action. Open it in a browser, fill in a sample student inquiry, and receive an instant AI-generated reply — no technical tools (like Postman) required to see it work.
+
+**Note:** The demo currently uses n8n's test webhook URL, which requires the workflow to be actively "listening" in n8n to respond. In production, this would use a permanent, always-on webhook URL.
+
 ## Error Handling
 This workflow includes built-in error handling. If the AI model fails (e.g., server issue, invalid request), the system automatically sends a professional fallback message instead of crashing — a critical requirement for production-ready client systems.
 
